@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { setAlert } from './alert'
-import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, GET_PROFILES, EDIT_PROFILE } from './types'
+import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, GET_PROFILES, EDIT_PROFILE, ACCOUNT_DELETED } from './types'
 
 
 // Get Current User's Profile
@@ -140,4 +140,30 @@ export const editProfile = (formData, history) => async dispatch => {
             } 
         })
     }
+}
+
+// Delete User Account and Profile
+export const deleteAccount = () => async dispatch => {
+    if(window.confirm('Are you sure? This cannot be undone!'))
+    try {
+         await axios.delete(`http://localhost:5000/api/users/me`)
+        
+         dispatch({
+            type : CLEAR_PROFILE
+        }) 
+         dispatch({
+            type : ACCOUNT_DELETED
+        })
+        dispatch(setAlert("Account has been successfully deleted", ''))
+
+    } catch (err) {
+        dispatch({
+            type : PROFILE_ERROR,
+            payload : {
+                message : err.response.statusText,
+                status  : err.response.status
+            } 
+        })
+    }
+
 }
