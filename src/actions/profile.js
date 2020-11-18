@@ -94,12 +94,12 @@ export const getProfileById = userId => async dispatch => {
             type : GET_PROFILE,
             payload : res.data
         })
-    } catch (error) {
+    } catch (err) {
         dispatch({
             type : PROFILE_ERROR,
             payload : {
-                message : error.response.statusText,
-                status  : error.response.status
+                message : err.response.statusText,
+                status  : err.response.status
             }
         })        
     }
