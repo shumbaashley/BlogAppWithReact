@@ -4,13 +4,14 @@ import PropTypes from 'prop-types'
 import { getCurrentProfile } from '../../actions/profile'
 import Spinner from '../layout/Spinner'
 import { Link } from 'react-router-dom'
+import DashboardActions from './DashboardActions'
 
 
 const Dashboard = ({getCurrentProfile, auth : { user }, profile : { profile, loading } }) => {
   
     useEffect(() => {
         getCurrentProfile()
-    }, [])
+    }, [getCurrentProfile])
   
     return loading && profile === null ? <Spinner/> : (
         <Fragment>
@@ -19,7 +20,9 @@ const Dashboard = ({getCurrentProfile, auth : { user }, profile : { profile, loa
                 <i className="fas fa-user"/> Welcome {user && user.username}
             </p>
 
-            { profile !== null ? <Fragment>has</Fragment> : 
+            { profile !== null ? (<Fragment>
+                <DashboardActions></DashboardActions>
+            </Fragment>) : 
                 <Fragment>
                     <p>You have not yet created a profile,  please add your information</p>
                     <Link to="/create-profile" className="btn btn-primary my-1">

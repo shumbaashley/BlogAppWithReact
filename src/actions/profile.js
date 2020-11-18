@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { setAlert } from './alert'
-import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, GET_PROFILES } from './types'
+import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, GET_PROFILES, EDIT_PROFILE } from './types'
 
 
 // Get Current User's Profile
@@ -105,3 +105,39 @@ export const getProfileById = userId => async dispatch => {
     }
 }
 
+// Edit Profile
+export const editProfile = (formData, history) => async dispatch => {
+    
+
+    try {
+        const config = {
+            headers : {
+                'Content-Type' : 'application/json'
+            }
+        }
+
+        const res = await axios.put('http://localhost:5000/api/profile', formData, config)
+
+        dispatch({
+            type : EDIT_PROFILE,
+            payload : res.data
+        })
+
+        dispatch(setAlert("Profile Updated", 'success'))
+
+        history.push('/dashboard')
+    } catch (err) {
+        const error = err.response.data 
+
+        if(error){
+            dispatch(setAlert(error.message, 'danger'))
+        }
+        dispatch({
+            type : PROFILE_ERROR,
+            payload : {
+                message : err.response.statusText,
+                status  : err.response.status
+            } 
+        })
+    }
+}

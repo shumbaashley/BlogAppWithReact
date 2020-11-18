@@ -12,6 +12,7 @@ export default function (state = initialState, action) {
 
     switch (type) {
         case GET_PROFILE:
+        case GET_PROFILE:
             return {
                 ...state,
                 profile : payload,
